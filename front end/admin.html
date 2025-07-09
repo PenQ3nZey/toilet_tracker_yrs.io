@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toilet Tracker (Tailwind CSS)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans Thai"', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-slate-100 font-sans flex items-center justify-center min-h-screen p-5">
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-9 max-w-4xl w-full">
+    <header class="flex items-center justify-between mb-6">
+      <div class="flex items-center">
+        <span class="text-3xl mr-4">🚽</span>
+        <h1 class="text-2xl font-semibold text-slate-800">Toilet Tracker | admin</h1>
+      </div>
+      <div class="text-slate-600 font-medium">
+       
+        <button id="login-btn" class="ml-4 bg-blue-500 text-white font-medium text-sm py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">
+          เข้าสู่ระบบแอดมิน
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <div class="flex flex-wrap items-center gap-4 mb-8">
+        <button id="add-problem-btn" class="flex items-center gap-2 bg-green-100 text-green-800 font-medium text-sm py-2.5 px-5 rounded-lg hover:bg-green-200 transition-colors">
+          <span class="font-bold text-base">+</span>
+          เพิ่มปัญหา
+        </button>
+        <button class="bg-slate-200 text-slate-700 font-medium text-sm py-2.5 px-5 rounded-lg hover:bg-slate-300 transition-colors">
+          วิธีการใช้งานพร้อมเหตุผลที่ทำ
+        </button>
+      </div>
+
+      <section>
+        <h2 class="text-xl font-semibold text-slate-800 mb-4">ปัญหา</h2>
+
+        <div class="max-h-96 overflow-y-auto border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-4" id="problem-list">
+          <div class="bg-white rounded-xl p-4 flex items-center gap-4 shadow border" data-room-id="ขก 10" data-user-name="สมชาย" data-problem-desc="น้ำไม่ไหล" data-img-src="">
+              <div class="flex-shrink-0 flex items-center justify-center w-12 h-12 bg-green-100 text-green-800 border border-green-200 rounded-lg text-2xl">🚽</div>
+              <div class="flex-grow">
+                  <div class="font-bold text-slate-800">ขก 10</div>
+                  <div class="text-sm text-slate-600">สมชาย</div>
+                  <div class="text-sm text-slate-500">น้ำไม่ไหล</div>
+                  <div class="text-xs text-slate-400 mt-1">03 ก.ค. 2568, 14:06</div>
+              </div>
+              <div class="text-sm font-medium text-slate-600 ml-auto">รอดำเนินการ</div>
+              <button class="edit-problem-btn text-yellow-600 cursor-pointer hover:opacity-75 text-xl">✏️</button>
+          </div>
+          </div>
+      </section>
+    </main>
+
+    <footer class="mt-8 pt-5 text-sm text-slate-400">contact|gmail</footer>
+  </div>
+
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-blue-100 rounded-2xl shadow-lg p-6 sm:p-8 max-w-md w-full">
+      <div class="flex justify-between items-center mb-6">
+        <h2 id="modal-title" class="text-xl font-semibold text-slate-800">เพิ่มปัญหาใหม่</h2>
+        <button id="close-modal-btn" class="text-slate-500 hover:text-slate-800">&times;</button>
+      </div>
+
+      <form id="problem-form">
+        <div class="flex items-center gap-4 mb-4">
+          <label for="image-input" class="cursor-pointer flex-shrink-0 flex items-center justify-center w-20 h-20 bg-slate-200 text-slate-500 rounded-lg text-4xl font-light hover:bg-slate-300">
+            +
+          </label>
+          <input type="file" id="image-input" accept="image/*" class="hidden" />
+          <div class="relative">
+            <img id="image-preview" class="w-20 h-20 object-cover rounded-lg hidden" />
+            <button type="button" id="remove-image-btn" class="absolute -top-2 -right-2 bg-white rounded-full text-red-500 hover:text-red-700 p-1 shadow hidden">🗑️</button>
+          </div>
+          <p class="text-sm text-slate-600">เพิ่มรูปภาพของปัญหา (ถ้ามี)</p>
+        </div>
+
+        <div class="mb-4">
+          <label for="room-id" class="block text-sm font-medium text-slate-700 mb-1">ห้องน้ำ (เช่น ขก 12)</label>
+          <input type="text" id="room-id" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="mb-4">
+          <label for="user-name" class="block text-sm font-medium text-slate-700 mb-1">ชื่อผู้แจ้ง</label>
+          <input type="text" id="user-name" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="mb-6">
+          <label for="problem-desc" class="block text-sm font-medium text-slate-700 mb-1">คำอธิบายปัญหา</label>
+          <textarea id="problem-desc" rows="3" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+        <button type="submit" id="submit-btn" class="w-full bg-blue-500 text-white font-bold py-2.5 px-4 rounded-lg hover:bg-blue-600 transition-colors">
+          บันทึกปัญหา
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div id="image-viewer-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+    <img id="viewer-image" class="max-w-full max-h-full rounded-xl border-4 border-white shadow-2xl" />
+  </div>
+
+  <script>
+    const addProblemBtn = document.getElementById('add-problem-btn');
+    const modal = document.getElementById('modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const problemForm = document.getElementById('problem-form');
+    const problemList = document.getElementById('problem-list');
+    const imageInput = document.getElementById('image-input');
+    const imagePreview = document.getElementById('image-preview');
+    const removeImageBtn = document.getElementById('remove-image-btn');
+    const imageViewerModal = document.getElementById('image-viewer-modal');
+    const viewerImage = document.getElementById('viewer-image');
+    const loginBtn = document.getElementById('login-btn');
+    const modalTitle = document.getElementById('modal-title');
+    const submitBtn = document.getElementById('submit-btn');
+
+    let currentEditingProblemElement = null; // To keep track of the problem being edited
+
+    // Function to reset the form
+    function resetProblemForm() {
+      problemForm.reset();
+      imageInput.value = '';
+      imagePreview.src = '';
+      imagePreview.classList.add('hidden');
+      removeImageBtn.classList.add('hidden');
+      currentEditingProblemElement = null; // Clear editing state
+      modalTitle.textContent = 'เพิ่มปัญหาใหม่'; // Reset modal title
+      submitBtn.textContent = 'บันทึกปัญหา'; // Reset submit button text
+    }
+
+    addProblemBtn.addEventListener('click', () => {
+      resetProblemForm(); // Ensure form is clean for new entry
+      modal.classList.remove('hidden');
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+      resetProblemForm(); // Reset form when closing
+    });
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        modal.classList.add('hidden');
+        resetProblemForm(); // Reset form when clicking outside
+      }
+    });
+
+    imageInput.addEventListener('change', () => {
+      const file = imageInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          imagePreview.src = e.target.result;
+          imagePreview.classList.remove('hidden');
+          removeImageBtn.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    removeImageBtn.addEventListener('click', () => {
+      imageInput.value = '';
+      imagePreview.src = '';
+      imagePreview.classList.add('hidden');
+      removeImageBtn.classList.add('hidden');
+    });
+
+    imageViewerModal.addEventListener('click', () => {
+      imageViewerModal.classList.add('hidden');
+      viewerImage.src = '';
+    });
+
+    problemForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const roomId = document.getElementById('room-id').value;
+      const userName = document.getElementById('user-name').value;
+      const problemDesc = document.getElementById('problem-desc').value;
+      const now = new Date();
+      const formattedTime = now.toLocaleString('th-TH', {
+        hour: '2-digit',
+        minute: '2-digit',
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      });
+
+      const imgSrc = imagePreview.src; // Use imagePreview.src directly for current image data
+
+      if (currentEditingProblemElement) {
+        // Editing existing problem
+        currentEditingProblemElement.querySelector('.font-bold.text-slate-800').textContent = roomId;
+        currentEditingProblemElement.querySelector('.text-sm.text-slate-600').textContent = userName;
+        currentEditingProblemElement.querySelector('.text-sm.text-slate-500').textContent = problemDesc;
+        // Update image if changed
+        const imgElement = currentEditingProblemElement.querySelector('.clickable-img');
+        const defaultIcon = currentEditingProblemElement.querySelector('.flex-shrink-0.bg-green-100');
+
+        if (imgSrc) {
+            if (defaultIcon) defaultIcon.remove(); // Remove default icon if image exists
+            if (imgElement) {
+                imgElement.src = imgSrc;
+            } else {
+                // If no img element exists, create one
+                const newImg = document.createElement('img');
+                newImg.src = imgSrc;
+                newImg.className = "w-16 h-16 object-cover rounded-lg border cursor-pointer clickable-img";
+                currentEditingProblemElement.prepend(newImg);
+            }
+        } else {
+            if (imgElement) imgElement.remove(); // Remove image if no image
+            if (!defaultIcon) { // Add default icon if it doesn't exist
+                const newIcon = document.createElement('div');
+                newIcon.className = "flex-shrink-0 flex items-center justify-center w-12 h-12 bg-green-100 text-green-800 border border-green-200 rounded-lg text-2xl";
+                newIcon.innerHTML = "🚽";
+                currentEditingProblemElement.prepend(newIcon);
+            }
+        }
+        // Update data attributes for future edits
+        currentEditingProblemElement.dataset.roomId = roomId;
+        currentEditingProblemElement.dataset.userName = userName;
+        currentEditingProblemElement.dataset.problemDesc = problemDesc;
+        currentEditingProblemElement.dataset.imgSrc = imgSrc;
+
+        // Optionally update time for edits (or keep original creation time)
+        // currentEditingProblemElement.querySelector('.text-xs.text-slate-400').textContent = formattedTime;
+
+      } else {
+        // Adding new problem
+        const newProblem = document.createElement('div');
+        newProblem.className = "bg-white rounded-xl p-4 flex items-center gap-4 shadow border";
+        // Add data attributes for easy retrieval when editing
+        newProblem.dataset.roomId = roomId;
+        newProblem.dataset.userName = userName;
+        newProblem.dataset.problemDesc = problemDesc;
+        newProblem.dataset.imgSrc = imgSrc; // Store image source
+
+        newProblem.innerHTML = `
+          ${imgSrc ? `<img src="${imgSrc}" class="w-16 h-16 object-cover rounded-lg border cursor-pointer clickable-img">` : `
+          <div class="flex-shrink-0 flex items-center justify-center w-12 h-12 bg-green-100 text-green-800 border border-green-200 rounded-lg text-2xl">🚽</div>`}
+          <div class="flex-grow">
+            <div class="font-bold text-slate-800">${roomId}</div>
+            <div class="text-sm text-slate-600">${userName}</div>
+            <div class="text-sm text-slate-500">${problemDesc}</div>
+            <div class="text-xs text-slate-400 mt-1">${formattedTime}</div>
+          </div>
+          <div class="text-sm font-medium text-slate-600 ml-auto">รอดำเนินการ</div>
+          <button class="edit-problem-btn text-yellow-600 cursor-pointer hover:opacity-75 text-xl">✏️</button>
+        `;
+
+        problemList.prepend(newProblem);
+      }
+
+      modal.classList.add('hidden');
+      resetProblemForm(); // Always reset form after submit
+    });
+
+    // Event listener for clicks on the problem list (for viewing image or editing)
+    problemList.addEventListener('click', (e) => {
+      // Image Viewer functionality
+      if (e.target.tagName === 'IMG' && e.target.classList.contains('clickable-img')) {
+        viewerImage.src = e.target.src;
+        imageViewerModal.classList.remove('hidden');
+      }
+
+      // Edit Problem functionality
+      if (e.target.classList.contains('edit-problem-btn')) {
+        currentEditingProblemElement = e.target.closest('.bg-white.rounded-xl');
+        if (currentEditingProblemElement) {
+          // Populate form fields
+          document.getElementById('room-id').value = currentEditingProblemElement.dataset.roomId || '';
+          document.getElementById('user-name').value = currentEditingProblemElement.dataset.userName || '';
+          document.getElementById('problem-desc').value = currentEditingProblemElement.dataset.problemDesc || '';
+
+          // Handle image preview
+          const existingImgSrc = currentEditingProblemElement.dataset.imgSrc || '';
+          if (existingImgSrc) {
+            imagePreview.src = existingImgSrc;
+            imagePreview.classList.remove('hidden');
+            removeImageBtn.classList.remove('hidden');
+          } else {
+            imagePreview.src = '';
+            imagePreview.classList.add('hidden');
+            removeImageBtn.classList.add('hidden');
+          }
+
+          modalTitle.textContent = 'แก้ไขปัญหา'; // Change modal title
+          submitBtn.textContent = 'อัปเดตปัญหา'; // Change submit button text
+          modal.classList.remove('hidden');
+        }
+      }
+    });
+
+    // Login button functionality
+    loginBtn.addEventListener('click', () => {
+      window.location.href = 'login.html'; // Redirect to login.html
+    });
+  </script>
+</body>
+</html>
