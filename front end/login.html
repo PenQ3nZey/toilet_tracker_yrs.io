@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login as Admin</title>
+  <title>Admin Login - Toilet Tracker</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
       theme: {
@@ -15,54 +15,71 @@
           fontFamily: {
             sans: ['"Noto Sans Thai"', 'sans-serif'],
           },
-          colors: {
-            // Define custom colors based on your design if needed
-            // For example, if the background pink is specific:
-            // lightPurple: '#F5E6F5', // Approximate color
-            // cardPurple: '#E8D4E8', // Approximate color
-          }
         },
       },
     };
   </script>
   <style>
-    /* Custom styles for the home icon, if needed, or use a font icon/SVG */
-    .home-icon {
-      font-size: 2.5rem; /* Adjust size as needed */
-      color: #6B7280; /* Tailwind slate-500 equivalent */
+    body {
+      background-color: #f0f4f8; /* Soft blue-gray background */
+    }
+    .login-container {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
   </style>
 </head>
-<body class="bg-purple-100 font-sans flex flex-col items-center justify-center min-h-screen p-5">
-  <div class="max-w-xl w-full">
-    <header class="flex items-center mb-10">
-      <a href="index.html" class="text-slate-500 hover:text-slate-700 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 home-icon">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 9-9 9 9M12 18.75V10.5m0 0a.75.75 0 0 1 .75.75v3.75m-3.75-3.75a.75.75 0 0 0-.75.75v3.75m3.75-3.75v-2.25m-3.75 2.25v-2.25m3.75 0v-.75a.75.75 0 0 1 .75-.75h.75m-3.75.75h.75" />
+<body class="font-sans flex items-center justify-center min-h-screen p-4">
+  
+  <div class="login-container rounded-2xl shadow-xl p-8 sm:p-12 w-full max-w-md relative">
+    <a href="index.html" class="absolute top-6 left-6 text-slate-500 hover:text-slate-800 transition-colors" title="กลับสู่หน้าหลัก">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
         </svg>
-      </a>
-      <h1 class="text-4xl font-semibold text-slate-800 ml-8">Login as Admin</h1>
-    </header>
+    </a>
 
-    <main class="bg-purple-200 rounded-2xl shadow-md p-8 sm:p-12 mb-6">
-      <form>
-        <div class="mb-6">
-          <label for="admin-name" class="block text-xl font-medium text-slate-700 mb-2">AdminName</label>
-          <input type="text" id="admin-name" class="w-full p-3 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-lg" />
+    <div class="text-center mb-10">
+        <h1 class="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">
+          Admin Login
+        </h1>
+        <p class="text-slate-500 mt-2">สำหรับผู้ดูแลระบบเท่านั้น</p>
+    </div>
+
+    <form id="login-form">
+        <div class="mb-5">
+          <label for="admin-name" class="block text-md font-medium text-slate-700 mb-2">Admin Name</label>
+          <input type="text" id="admin-name" class="w-full p-3 bg-white/50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" required />
         </div>
         <div class="mb-8">
-          <label for="password" class="block text-xl font-medium text-slate-700 mb-2">Password</label>
-          <input type="password" id="password" class="w-full p-3 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-lg" />
+          <label for="password" class="block text-md font-medium text-slate-700 mb-2">Password</label>
+          <input type="password" id="password" class="w-full p-3 bg-white/50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" required />
         </div>
-        <button type="submit" class="w-full bg-blue-500 text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition-colors text-lg">
+        <button type="submit" class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold text-base py-3 px-8 rounded-full hover:shadow-xl hover:-translate-y-1 transition-all duration-300 transform active:scale-95">
           เข้าสู่ระบบ
         </button>
       </form>
-    </main>
-
-    <footer class="text-center text-slate-500 text-lg">
-      *สำหรับผู้ดูแลระบบเท่านั้น
-    </footer>
   </div>
+
+  <script>
+    const loginForm = document.getElementById('login-form');
+
+    loginForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const usernameInput = document.getElementById('admin-name').value;
+      const passwordInput = document.getElementById('password').value;
+
+      const correctUsername = 'hatyairat_toilet';
+      const correctPassword = 'toilettracker_admin_69';
+
+      if (usernameInput === correctUsername && passwordInput === correctPassword) {
+        alert('เข้าสู่ระบบสำเร็จ!');
+        window.location.href = 'admin.html';
+      } else {
+        alert('AdminName หรือ Password ไม่ถูกต้อง');
+      }
+    });
+  </script>
 </body>
 </html>
